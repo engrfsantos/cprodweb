@@ -18,41 +18,24 @@ xmlns:th="http://www.thymeleaf.org">
 	<script src="js/producao.js"></script>
 	
 	<script type="text/javascript">	</script>
+	<link rel="stylesheet" href="css/estilos.css">
 </head>
 <body>
+	<header>
+        <nav class="navbar">
+            <h1>Controle de Produção</h1>
+            <ul class="nav-menu">
+                <li><a href="lancamento.html">Lançamento</a></li>
+                <li><a href="Consulta.html">Consulta</a></li>
+            </ul>
+        </nav>
+    </header>
 	<div class="panel panel-default" style="margin: 10px">
 		<div class="panel-heading">
 			<h1 class="panel-title">Lançamentos de Produção</h1>
 		</div>
 	</div>
 	
-	<div class="panel panel-default" style="margin: 10px">
-		<div class="panel-heading">
-			
-			<h1 class="panel-title">Filtros</h1>			
-			<form class="form-inline" method="GET" th:object="${producao}" th:action="@{/lancamento}" style="margin: 20px 0">			
-				<div class="form-group">					
-					<label for="setor">Usuario: </label>					
-					<input id="setor" type="text" class="form-control" name="nomeAcesso" th:value="${filtro.usuario.id}" style="width:120px;" >
-		  									
-					<label for="setorl">Local:</label>	
-					<input list="setorl" name="local" class="form-control"  th:value="${filtro.setor}">		
-		 						
-					<label for="postolist">Posto:</label>	
-					<input list="postolist" class="form-control" name="posto" th:value="${filtro.posto}">		
-					<datalist id="postolist">					
-						<OPTION  th:each="posto : ${postos}"  th:text="${posto.id}" >  				
-					</datalist>				
-				
-					<label for="dt">Data:</label>
-					<input type="text" name="dt" id="dt" class="form-control" style="width:100px;" th:value="${filtro.dtS}" >						
-				</div>
-		
-				<button type="submit" class="btn btn-primary" style="background: gray; height: 30px;">Aplicar</button>				
-			</form>			
-		</div>
-	</div>
-
 	<div class="panel panel-default" style="margin: 10px">
 		<div class="panel-heading">
 			<form class="form-inline" method="POST" th:object="${producao}" th:action="@{/lancamento}"   style="margin: 20px 0">
@@ -62,8 +45,6 @@ xmlns:th="http://www.thymeleaf.org">
 						<td> </td>
 						<td> <button type="submit" name="condicao" value="1" class="btn btn-primary" style="background: green; height: 30px;">Aprovado</button> </td>				
 						<td> <button type="submit" name="condicao" value="2" class="btn btn-primary" style="background: red; height: 30px;">Reprovado</button> </td>
-						<td> <button type="submit" name="condicao" value="3" class="btn btn-primary" style="background: orange; height: 30px;">Retrabalho</button> </td>
-						<td> <button type="submit" name="condicao" value="4" class="btn btn-primary" style="background: grey; height: 30px;">Sem Defeito</button> </td>
 					</tr>
 				</table>		
 			</form>
@@ -75,18 +56,16 @@ xmlns:th="http://www.thymeleaf.org">
 	<table class="table">
 		<thead>
 			<tr id="linha-producao" onblur="AtualizarDefeitos">
-				<th>ProduçãoID</th> <!-- style="visibility:hidden;" -->				
+				<th>Produção</th> <!-- style="visibility:hidden;" -->				
 				<th>Código</th>
 				<th>Descrição</th>
 				<th>Data</th>
 				<th>Hora</th>
-				<th>Posto</th>
+				<th>Setor</th>
 				<th>Leitura</th>
-				<th>Local</th>
+				<th>Processo</th>
 				<th>RE</th>
-				<th>Série</th>
-				<th>Condicao</th>
-				
+				<th>Série</th>				
 			</tr>
 		</thead>
 		<tbody>			
@@ -101,7 +80,6 @@ xmlns:th="http://www.thymeleaf.org">
 				<td th:text="${producao.setorId}"></td>
 				<td th:text="${producao.usuarioId}"></td>
 				<td th:text="${producao.serie}"></td>
-				<td th:text="${producao.condicao.descBreve}"></td>							
 				</tr>
 		
 		</tbody>
@@ -119,21 +97,21 @@ xmlns:th="http://www.thymeleaf.org">
 					<th>Hora</th>					
 					<th>Bipagem/Cód/PN</th>
 					<th>Condicao</th>
-					<th>Análise</th>
-					<th>Reparo</th>
+					<th>Obs</th>
+					<th>Ação</th>
 				</tr>
 			</thead>
 			<tbody>				
 				<tr th:each="proddefeito : ${proddefeitos}">						
-					<td th:text="${proddefeito.id}"/></td>
-					<td th:text="${proddefeito.producao.id}"  /></td>
-					<td th:text="${proddefeito.defeito.descricao}" /></td>						
-					<td th:text="${proddefeito.dt}"  /></td>
-					<td th:text="${proddefeito.HrStr}" /></td>						
-					<td th:text="${proddefeito.serie}" /></td>
-					<td th:text="${proddefeito.condicao.descricao}" /></td>						
-					<td th:text="${proddefeito.analise}" /></td>
-					<td th:text="${proddefeito.reparo}" /></td>						 
+					<td th:text="${proddefeito.id}"></td>
+					<td th:text="${proddefeito.producao.id}"></td>
+					<td th:text="${proddefeito.defeito.descricao}"></td>						
+					<td th:text="${proddefeito.dt}"></td>
+					<td th:text="${proddefeito.HrStr}" ></td>						
+					<td th:text="${proddefeito.serie}"></td>
+					<td th:text="${proddefeito.condicao.descricao}"></td>						
+					<td th:text="${proddefeito.analise}"></td>
+					<td th:text="${proddefeito.reparo}"></td>						 
 				</tr>	
 				<form class="form-inline" method="POST" th:object="${proddefeito}" th:action="@{/lancamento/proddefeito}" style="margin: 1px 0">
 					<tr>						
